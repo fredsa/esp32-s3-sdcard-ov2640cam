@@ -1,25 +1,51 @@
-# https://github.com/cnadler86/micropython-camera-API/blob/master/examples/SimpleWebCam.py
-#
-# Modfied to load ssid/password from `wifi.json`.
+"""
+https://github.com/cnadler86/micropython-camera-API/blob/master/examples/SimpleWebCam.py
+
+ Modfications:
+- Load ssid/password from `wifi.json`
+- Modified board config, load pins from `config.json`
+ """
 
 with open("simplewebcam.py", "w") as f:
     f.write(r'''
 import network
 import socket
 import time
-
-from camera import Camera, FrameSize, PixelFormat
-# Cam Config
-cam = Camera(frame_size = FrameSize.VGA,pixel_format=PixelFormat.JPEG,init=False)
-
-# WLAN config
 import json
 
-with open('wifi.json', 'r') as f:
+from camera import Camera, FrameSize, GrabMode, PixelFormat
+
+# Our configuration.
+with open('config.json', 'r') as f:
     config = json.load(f)
 
-ssid = config['ssid']
-password = config['password']
+
+# Cam Config
+cam = Camera(
+    data_pins=config['data_pins'],           # List of data pins
+    pclk_pin=config['pclk_pin'],             # Pixel clock
+    vsync_pin = config['vsync_pin'],         # VSYNC
+    href_pin = config['href_pin'],           # HREF
+    sda_pin = config['sda_pin'],             # SDA
+    scl_pin = config['scl_pin'],             # SCL
+    xclk_pin = config['xclk_pin'],           # XCLK pin (-1 = external clock source)
+    xclk_freq = config['xclk_freq'],         # XCLK frequency in Hz (see camera sensor spec)
+    powerdown_pin = config['powerdown_pin'], # Powerdown pin (-1 = not used)
+    reset_pin = config['reset_pin'],         # Reset pin (-1 = not used)
+    pixel_format=PixelFormat.JPEG,           # Pixel format as PixelFormat
+    frame_size = FrameSize.VGA,              # Frame size as FrameSize
+    jpeg_quality = 85,                       # JPEG quality
+    fb_count = 2,                            # Frame buffer count
+    grab_mode = GrabMode.LATEST,             # Grab mode as GrabMode
+    init=False                               # Initialize camera at construction time (default: True)
+    )
+
+# WLAN config
+with open('wifi.json', 'r') as f:
+    wifi = json.load(f)
+
+ssid = wifi['ssid']
+password = wifi['password']
 
 station = network.WLAN(network.STA_IF)
 station.active(True)
