@@ -128,3 +128,5 @@ while True:
     handle_client(client)
     ''')
 
+import simplewebcam
+
