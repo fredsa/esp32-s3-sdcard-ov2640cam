@@ -57,3 +57,11 @@ SDCard `CS` (pin 2) must be pulled low.
 
 9. Use your browser to connect to the IP address listed.
 
+
+# Testing the micro SDCard
+
+1. Paste `paste-sdcard.py` into the REPL.
+
+1. Insert a micro SDCard.
+
+1. Paste `paste-sd.py` into the REPL, and type `sd.mnt()`.
