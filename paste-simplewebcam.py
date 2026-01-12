@@ -38,7 +38,7 @@ cam = Camera(
     jpeg_quality = 85,                       # JPEG quality
     fb_count = 2,                            # Frame buffer count
     grab_mode = GrabMode.LATEST,             # Grab mode as GrabMode
-    init=False                               # Initialize camera at construction time (default: True)
+    #init=False                               # Initialize camera at construction time (default: True)
     )
 
 # WLAN config
@@ -105,7 +105,7 @@ def handle_client(client):
         if 'GET /stream' in request:
             response = b'HTTP/1.1 200 OK\r\nContent-Type: multipart/x-mixed-replace; boundary=frame\r\n\r\n'
             client.send(response)
-            cam.init()
+            #cam.init()
             while cam:
                 frame = cam.capture()
                 if frame:
@@ -120,7 +120,7 @@ def handle_client(client):
         print('Error:', e)
     finally:
         client.close()
-        cam.deinit()
+        #cam.deinit()
 
 while True:
     client, addr = s.accept()
