@@ -4,6 +4,7 @@ https://github.com/cnadler86/micropython-camera-API/blob/master/examples/SimpleW
  Modfications:
 - Load ssid/password from `wifi.json`
 - Modified board config, load pins from `config.json`
+- Faster Wi-Fi station detected loop
  """
 
 with open("simplewebcam.py", "w") as f:
@@ -52,7 +53,7 @@ station.active(True)
 station.connect(ssid, password)
 
 while not station.isconnected():
-    time.sleep(1)
+    time.sleep(.1)
 
 print(f'Connected! IP: {station.ifconfig()[0]}. Open this IP in your browser')
 
